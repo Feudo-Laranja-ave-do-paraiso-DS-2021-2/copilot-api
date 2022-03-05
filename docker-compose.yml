@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: copilot-db
+    image: postgres
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 2s
+      timeout: 2s
+      retries: 10
+
+  web:
+    build: .
+    container_name: copilot-api
+    command: bash -c "sh entrypoint.sh"
+    volumes:
+      - .:/code
+    ports:
+      - "8006:8006"
+    depends_on:
+      db:
+        condition: service_healthy 
