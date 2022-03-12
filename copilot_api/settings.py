@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from decouple import config
 from pathlib import Path
+from rest_framework.settings import api_settings
+
+# Api_settings
+api_settings.COERCE_DECIMAL_TO_STRING=False #Setting decimal as float when you GET method
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +27,7 @@ ENVIRONMENT = config('ENVIRONMENT')
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('ENVIRONMENT')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'copilot',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -138,3 +143,7 @@ STATICFILES_DIRS = [
 
 VERSION = config('VERSION', default='0.0')
 print("config: " + VERSION)
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
