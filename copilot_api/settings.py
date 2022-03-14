@@ -16,7 +16,7 @@ from pathlib import Path
 from rest_framework.settings import api_settings
 
 # Api_settings
-api_settings.COERCE_DECIMAL_TO_STRING=False #Setting decimal as float when you GET method
+api_settings.COERCE_DECIMAL_TO_STRING=True #Setting decimal as float when you use GET method
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
