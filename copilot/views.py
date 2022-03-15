@@ -12,6 +12,6 @@ class UserViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['mac_address']
     def get(self, request, *args, **kwargs):
-        emp = get_object_or_404(self.queryset, id=self.kwargs.get("pk"))
-        serializer = UserSerializers(emp)
+        user = get_object_or_404(self.queryset, id=self.kwargs.get("pk"))
+        serializer = UserSerializers(user)
         return Response(serializer.data)
