@@ -1,24 +1,24 @@
 from dataclasses import fields
 from rest_framework import serializers
 from .models import User, Group
-#from django.db import models
 
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id', 'nome', 'mac_address', 'latitude', 'longitude', 'hora', )
         
 
 class GroupSerializers(serializers.ModelSerializer):
+    users = UserSerializers(many=True)
+    
     class Meta:
         model = Group
-        fields = '__all__'
-        """"
-        nome = serializers.CharField(max_length=25)
-        users = serializers.ForeignKey('User', on_delete=models.CASCADE, many=True)
-        token = serializers.CharField(max_length=6, unique=False)
-        latitudeDest = serializers.DecimalField(max_digits=15, decimal_places=10)
-        longitudeDest = serializers.DecimalField(max_digits=15, decimal_places=10)
-        """
+        fields = ('id', 'nome', 'users', 'token', 'latitudeDest', 'longitudeDest', )
 
+    def create(self, validated_data):
+        users_data = validated_data.pop('users')
+        group = Group.objects.create(**validated_data)
+        for users_data in users_data:
+            Group.objects.create(group=group, **user_data)
+        return group

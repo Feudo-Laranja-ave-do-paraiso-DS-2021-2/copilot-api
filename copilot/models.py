@@ -13,7 +13,7 @@ class User(models.Model):
 
 class Group(models.Model):
     nome = models.CharField(max_length=25)
-    users = models.ForeignKey('User', on_delete=models.CASCADE)
+    users = models.ManyToManyField(User, blank=True)
     token = models.CharField(max_length=6, unique=False)
     latitudeDest = models.DecimalField(max_digits=15, decimal_places=10)
     longitudeDest = models.DecimalField(max_digits=15, decimal_places=10)

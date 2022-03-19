@@ -25,4 +25,3 @@ class GroupViewSet(ModelViewSet):
         group = get_object_or_404(self.queryset, id=self.kwargs.get("pk"))
         serializer = GroupSerializers(user)
         return Response(serializer.data)
-
