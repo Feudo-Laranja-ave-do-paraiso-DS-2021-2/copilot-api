@@ -146,5 +146,6 @@ VERSION = config('VERSION', default='0.0')
 print("config: " + VERSION)
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DATETIME_FORMAT': "%d/%m/%Y - %H:%M:%S",
 }
