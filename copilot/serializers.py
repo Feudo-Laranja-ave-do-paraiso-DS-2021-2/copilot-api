@@ -7,7 +7,7 @@ class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'primeiro_nome', 'sobrenome', 'numero_celular', 'latitude', 'longitude', 'data_hora', )
-        
+
 class GroupSerializers(serializers.ModelSerializer):
     users = UserSerializers(many=True, required=False)
     class Meta:
