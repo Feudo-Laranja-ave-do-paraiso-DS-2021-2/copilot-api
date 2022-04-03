@@ -2,20 +2,19 @@ from django.utils.crypto import get_random_string
 from django.db import models
 
 
-class User(models.Model):
-    primeiro_nome = models.CharField(max_length=35, )
-    sobrenome = models.CharField(max_length=35, )
-    numero_celular = models.CharField(max_length=15, unique=True, )
+class Profile(models.Model):
+    nome_completo = models.CharField(max_length=75, )
+    aplication_id = models.CharField(max_length=15, unique=True, )
     latitude = models.DecimalField(max_digits=8, decimal_places=6, )
     longitude = models.DecimalField(max_digits=9, decimal_places=6, )
     data_hora = models.DateTimeField(auto_now_add=True, )
-    
+
     def __str__(self):
-       return self.primeiro_nome
+       return self.nome_completo
 
 class Group(models.Model):
     nome_grupo = models.CharField(max_length=25, )
-    users = models.ManyToManyField(User, blank=True, )
+    profiles = models.ManyToManyField(Profile, blank=True, )
     token = models.CharField(max_length=6, blank=True, null=True, editable=False, unique=True, )
     latitude_destino = models.DecimalField(max_digits=8, decimal_places=6, )
     longitude_destino = models.DecimalField(max_digits=9, decimal_places=6, )
