@@ -1,15 +1,15 @@
 from dataclasses import fields
 from rest_framework import serializers
-from .models import User, Group
+from .models import Profile, Group
 
 
-class UserSerializers(serializers.ModelSerializer):
+class ProfileSerializers(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ('id', 'primeiro_nome', 'sobrenome', 'numero_celular', 'latitude', 'longitude', 'data_hora', )
-
+        model = Profile
+        fields = ('id', 'nome_completo', 'id_dispositivo', 'latitude', 'longitude', 'data_hora', )
+        
 class GroupSerializers(serializers.ModelSerializer):
-    users = UserSerializers(many=True, required=False)
+    profiles = ProfileSerializers(many=True, required=False)
     class Meta:
         model = Group
-        fields = ('id', 'nome_grupo', 'token', 'latitude_destino', 'longitude_destino', 'users', )
+        fields = ('id', 'nome_grupo', 'token', 'latitude_destino', 'longitude_destino', 'profiles', )
