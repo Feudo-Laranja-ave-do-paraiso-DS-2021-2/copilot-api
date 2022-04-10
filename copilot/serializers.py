@@ -6,7 +6,7 @@ from .models import Profile, Group
 class ProfileSerializers(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('id','nome_completo', 'aplication_id', 'latitude', 'longitude', 'data_hora', )
+        fields = ('id', 'nome_completo', 'id_dispositivo', 'latitude', 'longitude', 'data_hora', )
 
 class GroupSerializers(serializers.ModelSerializer):
     profiles = ProfileSerializers(many=True, required=False)

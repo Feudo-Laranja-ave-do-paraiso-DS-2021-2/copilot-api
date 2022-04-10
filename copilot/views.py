@@ -1,14 +1,15 @@
 from rest_framework.viewsets import ModelViewSet
 from .models import Profile, Group
 from .serializers import ProfileSerializers, GroupSerializers
-from django.http import HttpResponse
+from rest_framework.response import Response
 from rest_framework.decorators import action
+from itertools import chain
 
 
 class ProfileViewSet(ModelViewSet):
     serializer_class = ProfileSerializers
     queryset = Profile.objects.all()
-    filterset_fields = ['aplication_id', ]
+    filterset_fields = ['id_dispositivo',]
 
 class GroupViewSet(ModelViewSet):
     serializer_class = GroupSerializers
@@ -19,9 +20,12 @@ class GroupViewSet(ModelViewSet):
     def adicionar_profile(self, request, pk):
         profiles = request.data['ids']
         group = Group.objects.get(id=pk)
-        group.profiles.set(profiles)
+        old_profiles = group.profiles.all()
+        all_profiles = chain(old_profiles, profiles)
+        group.profiles.set(all_profiles)
         group.save()
-        return HttpResponse('Ok, usuario(s) adicionado(s)!')
+        serializer = self.get_serializer(group)
+        return Response(serializer.data)
 
     @action(methods=['delete'], detail=True)
     def retirar_profile(self, request, pk):
@@ -30,4 +34,5 @@ class GroupViewSet(ModelViewSet):
         for id in profiles:
             group.profiles.remove(id)
         group.save()
-        return HttpResponse('Ok, usuario(s) removido(s)!')
+        serializer = self.get_serializer(group)
+        return Response(serializer.data)

@@ -3,10 +3,10 @@ from django.db import models
 
 
 class Profile(models.Model):
-    nome_completo = models.CharField(max_length=75, )
-    aplication_id = models.CharField(max_length=15, unique=True, )
-    latitude = models.DecimalField(max_digits=8, decimal_places=6, )
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, )
+    nome_completo = models.CharField(max_length=75, blank=True, )
+    id_dispositivo = models.CharField(max_length=25, unique=True, )
+    latitude = models.DecimalField(max_digits=15, decimal_places=10, )
+    longitude = models.DecimalField(max_digits=15, decimal_places=10, )
     data_hora = models.DateTimeField(auto_now_add=True, )
 
     def __str__(self):
@@ -16,8 +16,8 @@ class Group(models.Model):
     nome_grupo = models.CharField(max_length=25, )
     profiles = models.ManyToManyField(Profile, blank=True, )
     token = models.CharField(max_length=6, blank=True, null=True, editable=False, unique=True, )
-    latitude_destino = models.DecimalField(max_digits=8, decimal_places=6, )
-    longitude_destino = models.DecimalField(max_digits=9, decimal_places=6, )
+    latitude_destino = models.DecimalField(max_digits=15, decimal_places=10, blank=True, null=True )
+    longitude_destino = models.DecimalField(max_digits=15, decimal_places=10, blank=True, null=True )
 
     def set_token(self):
         string = get_random_string(6).upper()
