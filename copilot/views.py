@@ -1,17 +1,33 @@
 from rest_framework.viewsets import ModelViewSet
-from .models import User
-from .serializers import UserSerializers
-from django.shortcuts import get_object_or_404
-from rest_framework.response import Response
-from django_filters.rest_framework import DjangoFilterBackend
+from .models import Profile, Group
+from .serializers import ProfileSerializers, GroupSerializers
+from django.http import HttpResponse
+from rest_framework.decorators import action
 
 
-class UserViewSet(ModelViewSet):
-    serializer_class = UserSerializers
-    queryset = User.objects.all()
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['mac_address']
-    def get(self, request, *args, **kwargs):
-        emp = get_object_or_404(self.queryset, id=self.kwargs.get("pk"))
-        serializer = UserSerializers(emp)
-        return Response(serializer.data)
+class ProfileViewSet(ModelViewSet):
+    serializer_class = ProfileSerializers
+    queryset = Profile.objects.all()
+    filterset_fields = ['id_dispositivo', ]
+
+class GroupViewSet(ModelViewSet):
+    serializer_class = GroupSerializers
+    queryset = Group.objects.all()
+    filterset_fields = ['token', ]
+
+    @action(methods=['post'], detail=True)
+    def adicionar_profile(self, request, pk):
+        profiles = request.data['ids']
+        group = Group.objects.get(id=pk)
+        group.profiles.set(profiles)
+        group.save()
+        return HttpResponse('Ok, usuario(s) adicionado(s)!')
+
+    @action(methods=['delete'], detail=True)
+    def retirar_profile(self, request, pk):
+        profiles = request.data['ids']
+        group = Group.objects.get(id=pk)
+        for id in profiles:
+            group.profiles.remove(id)
+        group.save()
+        return HttpResponse('Ok, usuario(s) removido(s)!')

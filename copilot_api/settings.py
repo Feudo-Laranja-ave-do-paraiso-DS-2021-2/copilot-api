@@ -15,6 +15,7 @@ from decouple import config
 from pathlib import Path
 from rest_framework.settings import api_settings
 
+
 # Api_settings
 api_settings.COERCE_DECIMAL_TO_STRING=True #Setting decimal as float when you use GET method if COERCE_DECIMAL_TO_STRING=False
 
@@ -145,5 +146,6 @@ VERSION = config('VERSION', default='0.0')
 print("config: " + VERSION)
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DATETIME_FORMAT': "%d/%m/%Y - %H:%M:%S",
 }
