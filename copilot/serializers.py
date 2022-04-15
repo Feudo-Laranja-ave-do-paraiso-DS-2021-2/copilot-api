@@ -8,6 +8,7 @@ class ProfileSerializers(serializers.ModelSerializer):
         model = Profile
         fields = ('id', 'nome_completo', 'id_dispositivo', 'latitude', 'longitude', 'data_hora', )
 
+        
 class GroupSerializers(serializers.ModelSerializer):
     profiles = ProfileSerializers(many=True, required=False)
     class Meta:
